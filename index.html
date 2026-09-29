@@ -40,9 +40,20 @@ html{scroll-behavior:smooth}
         <a href="#contacto" style="color:#5A4336;text-decoration:none" style-hover="color:#8A6A3F">Contacto</a>
       </nav>
     </sc-if>
+    <div style="display:flex;align-items:center;gap:10px">
+    <sc-if value="{{ isClient }}" hint-placeholder-val="{{ true }}">
+      <button onClick="{{ openCart }}" aria-label="Abrir carrito" style="position:relative;cursor:pointer;display:flex;align-items:center;gap:8px;border:1px solid #B8925A;background:transparent;color:#3B2A22;border-radius:999px;padding:9px 16px;font:500 13px 'DM Sans',sans-serif" style-hover="background:#F4E4DE">
+        <svg width="18" height="18" viewBox="0 0 256 256" aria-hidden="true" fill="currentColor"><path d="M216,64H176a48,48,0,0,0-96,0H40A16,16,0,0,0,24,80V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V80A16,16,0,0,0,216,64ZM128,32a32,32,0,0,1,32,32H96A32,32,0,0,1,128,32Zm88,168H40V80H80V96a8,8,0,0,0,16,0V80h64V96a8,8,0,0,0,16,0V80h40Z"></path></svg>
+        Carrito
+        <sc-if value="{{ hasCartCount }}" hint-placeholder-val="{{ false }}">
+          <span style="min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:#7A1C22;color:#F7F1EA;font:600 12px/22px 'DM Sans',sans-serif;text-align:center">{{ cartCount }}</span>
+        </sc-if>
+      </button>
+    </sc-if>
     <div role="tablist" aria-label="Cambiar vista" style="display:flex;padding:4px;border:1px solid #E4D6C8;border-radius:999px;background:#FFFCF8;gap:2px">
       <button role="tab" onClick="{{ showClient }}" style="border:0;cursor:pointer;border-radius:999px;padding:{{ tabPad }};font:500 13px 'DM Sans',sans-serif;background:{{ tabClientBg }};color:{{ tabClientFg }}">{{ tabClientLabel }}</button>
       <button role="tab" onClick="{{ showOwner }}" style="border:0;cursor:pointer;border-radius:999px;padding:{{ tabPad }};font:500 13px 'DM Sans',sans-serif;background:{{ tabOwnerBg }};color:{{ tabOwnerFg }}">{{ tabOwnerLabel }}</button>
+    </div>
     </div>
   </div>
 </header>
@@ -189,7 +200,7 @@ html{scroll-behavior:smooth}
         <div data-reveal="2" style="background:#FFFCF8;border:1px solid #E4D6C8;border-radius:18px;padding:32px;display:flex;flex-direction:column;gap:12px">
           <span style="font:500 52px/1 'Cormorant Garamond',serif;color:#B8925A">1</span>
           <h3 style="margin:0;font:600 24px 'Cormorant Garamond',serif;color:#3B2A22">Elige tu pieza</h3>
-          <p style="margin:0;font:400 15px/1.6 'DM Sans',sans-serif;color:#5A4336">Toca “Pedir” en la joya que te guste y déjanos tu nombre.</p>
+          <p style="margin:0;font:400 15px/1.6 'DM Sans',sans-serif;color:#5A4336">Agrega a tu carrito las joyas que te gusten y déjanos tu nombre.</p>
         </div>
         <div data-reveal="3" style="background:#FFFCF8;border:1px solid #E4D6C8;border-radius:18px;padding:32px;display:flex;flex-direction:column;gap:12px">
           <span style="font:500 52px/1 'Cormorant Garamond',serif;color:#B8925A">2</span>
@@ -256,6 +267,72 @@ html{scroll-behavior:smooth}
           </div>
         </sc-if>
       </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ cartOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeCart }}" style="position:fixed;inset:0;z-index:70;background:rgba(59,42,34,.5);display:flex;justify-content:flex-end">
+      <aside onClick="{{ stop }}" role="dialog" aria-modal="true" aria-label="Carrito" style="width:min(440px,100%);height:100%;background:#F7F1EA;display:flex;flex-direction:column;border-left:1px solid #E4D6C8">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 22px;border-bottom:1px solid #E4D6C8">
+          <h3 style="margin:0;font:500 30px 'Cormorant Garamond',serif;color:#3B2A22">Tu <em style="font-style:italic;color:#7A1C22">carrito</em></h3>
+          <button onClick="{{ closeCart }}" aria-label="Cerrar" style="cursor:pointer;width:44px;height:44px;border-radius:50%;border:1px solid #E4D6C8;background:#FFFCF8;color:#3B2A22;font:400 20px 'DM Sans',sans-serif" style-hover="background:#F4E4DE">×</button>
+        </div>
+        <sc-if value="{{ cartSentDone }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:32px 22px;display:flex;flex-direction:column;gap:14px;align-items:flex-start">
+            <span aria-hidden="true" style="color:#C9A46A;font-size:22px">✦</span>
+            <h3 style="margin:0;font:500 32px/1.1 'Cormorant Garamond',serif;color:#3B2A22">¡Gracias, {{ cartSentName }}!</h3>
+            <p style="margin:0;font:400 15px/1.6 'DM Sans',sans-serif;color:#5A4336">Se abrió WhatsApp con tu pedido listo. Solo presiona enviar y te respondemos muy pronto.</p>
+            <button onClick="{{ closeCart }}" style="cursor:pointer;border:1px solid #B8925A;background:transparent;color:#3B2A22;border-radius:999px;padding:14px 26px;font:500 14px 'DM Sans',sans-serif" style-hover="background:#F4E4DE">Seguir viendo</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ cartFormOpen }}" hint-placeholder-val="{{ true }}">
+          <div style="flex:1;overflow-y:auto;padding:18px 22px;display:flex;flex-direction:column;gap:12px">
+            <sc-if value="{{ cartEmpty }}" hint-placeholder-val="{{ false }}">
+              <p style="margin:24px 0;font:400 15px/1.6 'DM Sans',sans-serif;color:#5A4336">Tu carrito está vacío. Agrega las piezas que te gusten desde la colección.</p>
+            </sc-if>
+            <sc-for list="{{ cartLines }}" as="l" hint-placeholder-count="2">
+              <div style="display:flex;gap:14px;align-items:center;background:#FFFCF8;border:1px solid #E4D6C8;border-radius:16px;padding:12px">
+                <div style="position:relative;width:64px;height:64px;border-radius:12px;overflow:hidden;background:#F4E4DE;flex:none">
+                  <image-slot id="camelia-p-{{ l.id }}" placeholder="" style="position:absolute;inset:0;pointer-events:none"></image-slot>
+                </div>
+                <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
+                  <span style="font:600 19px/1.15 'Cormorant Garamond',serif;color:#3B2A22">{{ l.name }}</span>
+                  <span style="font:500 13px 'DM Sans',sans-serif;color:#8A6A3F">{{ l.unitLabel }} c/u</span>
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px">
+                    <div style="display:flex;align-items:center;gap:2px;border:1px solid #E4D6C8;border-radius:999px;padding:2px">
+                      <button onClick="{{ l.dec }}" aria-label="Quitar uno" style="cursor:pointer;width:34px;height:34px;border-radius:50%;border:0;background:transparent;color:#3B2A22;font:500 16px 'DM Sans',sans-serif" style-hover="background:#F4E4DE">−</button>
+                      <span style="min-width:24px;text-align:center;font:600 14px 'DM Sans',sans-serif;color:#3B2A22">{{ l.qty }}</span>
+                      <button onClick="{{ l.inc }}" aria-label="Agregar uno" style="cursor:pointer;width:34px;height:34px;border-radius:50%;border:0;background:transparent;color:#3B2A22;font:500 16px 'DM Sans',sans-serif" style-hover="background:#F4E4DE">+</button>
+                    </div>
+                    <span style="font:600 20px 'Cormorant Garamond',serif;color:#3B2A22">{{ l.lineLabel }}</span>
+                  </div>
+                </div>
+              </div>
+            </sc-for>
+            <sc-if value="{{ cartHasItems }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-direction:column;gap:12px;margin-top:8px">
+                <label style="display:flex;flex-direction:column;gap:6px;font:500 13px 'DM Sans',sans-serif;color:#5A4336">Tu nombre
+                  <input value="{{ fName }}" onChange="{{ setFName }}" placeholder="Ej. Valentina" style="font:400 16px 'DM Sans',sans-serif;color:#3B2A22;padding:13px 14px;border:1px solid #E4D6C8;border-radius:12px;background:#FFFCF8"></input>
+                </label>
+                <label style="display:flex;flex-direction:column;gap:6px;font:500 13px 'DM Sans',sans-serif;color:#5A4336">WhatsApp
+                  <input value="{{ fPhone }}" onChange="{{ setFPhone }}" inputmode="tel" placeholder="Tu número" style="font:400 16px 'DM Sans',sans-serif;color:#3B2A22;padding:13px 14px;border:1px solid #E4D6C8;border-radius:12px;background:#FFFCF8"></input>
+                </label>
+                <label style="display:flex;flex-direction:column;gap:6px;font:500 13px 'DM Sans',sans-serif;color:#5A4336">Nota (dirección, regalo…)
+                  <textarea value="{{ fNote }}" onChange="{{ setFNote }}" rows="2" style="font:400 16px 'DM Sans',sans-serif;color:#3B2A22;padding:13px 14px;border:1px solid #E4D6C8;border-radius:12px;background:#FFFCF8;resize:vertical"></textarea>
+                </label>
+              </div>
+            </sc-if>
+          </div>
+          <sc-if value="{{ cartHasItems }}" hint-placeholder-val="{{ true }}">
+            <div style="padding:16px 22px 22px;border-top:1px solid #E4D6C8;background:#FFFCF8;display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline">
+                <span style="font:600 13px 'DM Sans',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8A6A3F">Total</span>
+                <span style="font:600 32px 'Cormorant Garamond',serif;color:#3B2A22">{{ cartTotalLabel }}</span>
+              </div>
+              <button onClick="{{ submitCart }}" disabled="{{ cantCart }}" style="position:relative;overflow:hidden;cursor:pointer;border:0;background:#7A1C22;color:#F7F1EA;border-radius:999px;padding:18px 28px;font:500 15px 'DM Sans',sans-serif;opacity:{{ cartSubmitOpacity }}"><span aria-hidden="true" style="position:absolute;top:0;bottom:0;left:0;width:30%;background:linear-gradient(90deg,transparent,rgba(243,226,195,.16),transparent);animation:dbSheen 6.5s ease-in-out infinite"></span><span style="position:relative">Enviar pedido por WhatsApp</span></button>
+            </div>
+          </sc-if>
+        </sc-if>
+      </aside>
     </div>
   </sc-if>
 </main>
@@ -397,14 +474,15 @@ class Component extends DCLogic {
       products: saved?.products ?? Component.SEED,
       orders: saved?.orders ?? [],
       promo: saved?.promo ?? { active: false, title: 'Semana Camelia', pct: 15, scope: 'Todas' },
+      cart: saved?.cart ?? [], cartOpen: false, cartSent: null,
       filter: 'Todas', ownerTab: 'pieces',
       modal: null, sent: null, fName: '', fPhone: '', fNote: ''
     };
   }
   componentDidMount() { this.reveal(); this.onResize = () => this.setState({ w: window.innerWidth }); window.addEventListener('resize', this.onResize); this.onResize(); }
   componentDidUpdate(pp, ps) {
-    if (ps.products !== this.state.products || ps.orders !== this.state.orders || ps.promo !== this.state.promo) {
-      try { localStorage.setItem(Component.KEY, JSON.stringify({ products: this.state.products, orders: this.state.orders, promo: this.state.promo })); } catch (e) {}
+    if (ps.products !== this.state.products || ps.orders !== this.state.orders || ps.promo !== this.state.promo || ps.cart !== this.state.cart) {
+      try { localStorage.setItem(Component.KEY, JSON.stringify({ products: this.state.products, orders: this.state.orders, promo: this.state.promo, cart: this.state.cart })); } catch (e) {}
     }
     if (ps.view !== this.state.view) this.reveal();
   }
@@ -424,6 +502,15 @@ class Component extends DCLogic {
       this.io.observe(el);
     }));
   }
+  addToCart(id) {
+    this.setState(ss => {
+      const p = ss.products.find(x => x.id === id); if (!p) return null;
+      const ex = ss.cart.find(c => c.id === id);
+      const cart = ex ? ss.cart.map(c => c.id === id ? { ...c, qty: Math.min(p.stock, c.qty + 1) } : c) : [...ss.cart, { id, qty: 1 }];
+      return { cart, cartOpen: true, cartSent: null };
+    });
+  }
+  setQty(id, q) { this.setState(ss => ({ cart: q <= 0 ? ss.cart.filter(c => c.id !== id) : ss.cart.map(c => c.id === id ? { ...c, qty: q } : c) })); }
   upd(id, patch) { this.setState(s => ({ products: s.products.map(p => p.id === id ? { ...p, ...patch } : p) })); }
   renderVals() {
     const s = this.state, cur = this.props.currency ?? '$';
@@ -440,8 +527,8 @@ class Component extends DCLogic {
     const finalPrice = p => promoOn(p) ? Math.round(p.price * (100 - pct)) / 100 : p.price;
     const shopItems = shop.map(p => {
       const soldOut = p.stock <= 0, fp = finalPrice(p);
-      return { ...p, soldOut, onPromo: promoOn(p), pctLabel: '−' + pct + '%', oldPrice: money(p.price), priceLabel: money(fp), btnLabel: soldOut ? 'Agotado' : 'Pedir', btnOpacity: soldOut ? 0.45 : 1,
-        order: () => this.setState({ modal: { id: p.id, name: p.name, price: fp }, sent: null }) };
+      return { ...p, soldOut, onPromo: promoOn(p), pctLabel: '−' + pct + '%', oldPrice: money(p.price), priceLabel: money(fp), btnLabel: soldOut ? 'Agotado' : 'Agregar al carrito', btnOpacity: soldOut ? 0.45 : 1,
+        order: () => { if (!soldOut) this.addToCart(p.id); } };
     });
     const setPromo = patch => this.setState(ss => ({ promo: { ...ss.promo, ...patch } }));
     const promoScopes = ['Todas', 'Anillos', 'Aretes', 'Collares', 'Pulseras'].map(name => {
@@ -482,6 +569,16 @@ class Component extends DCLogic {
     const pending = s.orders.filter(o => o.status === 'Nuevo').length;
     const salesTotal = s.orders.filter(o => o.status === 'Confirmado' || o.status === 'Entregado').reduce((a, o) => a + (o.price || 0), 0);
     const mobile = (s.w || 1200) < 860;
+    const cartLines = s.cart.map(c => {
+      const p = s.products.find(x => x.id === c.id); if (!p || !p.visible) return null;
+      const qty = Math.min(c.qty, Math.max(p.stock, 0)); if (qty <= 0) return null;
+      const unit = finalPrice(p);
+      return { id: p.id, name: p.name, cat: p.cat, qty, unit, unitLabel: money(unit), lineLabel: money(unit * qty), onPromo: promoOn(p), oldLabel: money(p.price),
+        inc: () => this.setQty(p.id, Math.min(p.stock, qty + 1)), dec: () => this.setQty(p.id, qty - 1), remove: () => this.setQty(p.id, 0) };
+    }).filter(Boolean);
+    const cartCount = cartLines.reduce((a, l) => a + l.qty, 0);
+    const cartTotal = cartLines.reduce((a, l) => a + l.unit * l.qty, 0);
+    const cantCart = !s.fName.trim() || cartLines.length === 0;
     return {
       isClient, isOwner: !isClient, showNav: isClient && !mobile,
       logoH: mobile ? 52 : 64, tabPad: mobile ? '8px 14px' : '9px 18px',
@@ -499,6 +596,20 @@ class Component extends DCLogic {
       setFName: e => this.setState({ fName: e.target.value }), setFPhone: e => this.setState({ fPhone: e.target.value }), setFNote: e => this.setState({ fNote: e.target.value }),
       cantSubmit, submitOpacity: cantSubmit ? 0.45 : 1,
       stop: e => e.stopPropagation(),
+      cartCount, hasCartCount: cartCount > 0, cartLines, cartEmpty: cartLines.length === 0, cartHasItems: cartLines.length > 0,
+      cartTotalLabel: money(cartTotal), cartOpen: s.cartOpen, cartSentDone: !!s.cartSent, cartFormOpen: !s.cartSent, cartSentName: s.cartSent || '',
+      openCart: () => this.setState({ cartOpen: true, cartSent: null }), closeCart: () => this.setState({ cartOpen: false, cartSent: null }),
+      cantCart, cartSubmitOpacity: cantCart ? 0.45 : 1,
+      submitCart: () => {
+        if (cantCart) return;
+        const summary = cartLines.map(l => l.name + (l.qty > 1 ? ' ×' + l.qty : '')).join(', ');
+        const o = { id: 'o' + Date.now(), client: s.fName.trim(), phone: s.fPhone.trim(), note: s.fNote.trim(), product: summary, price: cartTotal,
+          date: new Date().toLocaleDateString('es', { day: 'numeric', month: 'short' }), status: 'Nuevo' };
+        const msg = ['Hola Camelia ✨, soy ' + o.client + '. Quiero hacer este pedido:', ...cartLines.map(l => '• ' + l.name + ' ×' + l.qty + ' — ' + l.lineLabel),
+          'Total: ' + money(cartTotal), o.note ? 'Nota: ' + o.note : '', o.phone ? 'Mi número: ' + o.phone : ''].filter(Boolean).join('\n');
+        window.open('https://wa.me/593967335317?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+        this.setState(ss => ({ orders: [o, ...ss.orders], cart: [], cartSent: o.client, fName: '', fPhone: '', fNote: '' }));
+      },
       closeModal: () => this.setState({ modal: null, sent: null }),
       submitOrder: () => {
         if (cantSubmit) return;
