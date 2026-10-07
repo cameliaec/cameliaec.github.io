@@ -2,8 +2,8 @@
 // Completa URL y ANON_KEY desde Supabase → Settings → API.
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-export const SUPABASE_URL = '';      // https://xxxx.supabase.co
-export const SUPABASE_ANON_KEY = ''; // clave "anon public"
+export const SUPABASE_URL = 'https://jukpaqtriemqvxormrgb.supabase.co';
+export const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp1a3BhcXRyaWVtcXZ4b3JtcmdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzODY1ODQsImV4cCI6MjEwNTk2MjU4NH0.4PPIVK2HvvgwrGEtNVn7CozqDCldvlFWnK2rpgrOmHE';
 const BUCKET = 'camelia-fotos';
 
 export const db = SUPABASE_URL ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { db: { schema: 'camelia' } }) : null;

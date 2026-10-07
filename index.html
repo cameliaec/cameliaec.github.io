@@ -127,7 +127,8 @@ html{scroll-behavior:smooth}
         <sc-for list="{{ shopItems }}" as="p" hint-placeholder-count="8">
           <article style="display:flex;flex-direction:column;background:#FFFCF8;border:1px solid #E4D6C8;border-radius:18px;overflow:hidden">
             <div style="position:relative;aspect-ratio:1/1;background:#F4E4DE;overflow:hidden">
-              <image-slot id="camelia-p-{{ p.id }}" placeholder="Foto de {{ p.name }}" style="position:absolute;inset:0"></image-slot>
+              <sc-if value="{{ p.hasPhoto }}" hint-placeholder-val="{{ false }}"><img data-src="{{ p.photo }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></sc-if>
+              <sc-if value="{{ p.noPhoto }}" hint-placeholder-val="{{ true }}"><image-slot id="camelia-p-{{ p.id }}" placeholder="Foto de {{ p.name }}" style="position:absolute;inset:0"></image-slot></sc-if>
               <sc-if value="{{ p.featured }}" hint-placeholder-val="{{ false }}">
                 <span style="position:absolute;top:14px;left:14px;padding:6px 12px;border-radius:999px;font:600 11px 'DM Sans',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#F3E2C3;border:1px solid transparent;background:linear-gradient(#5E151A,#5E151A) padding-box,linear-gradient(120deg,#F3E2C3,#8A6A3F 40%,#E4C9A0 60%,#8A6A3F) border-box;pointer-events:none">Favorita</span>
               </sc-if>
@@ -305,7 +306,8 @@ html{scroll-behavior:smooth}
             <sc-for list="{{ cartLines }}" as="l" hint-placeholder-count="2">
               <div style="display:flex;gap:14px;align-items:center;background:#FFFCF8;border:1px solid #E4D6C8;border-radius:16px;padding:12px">
                 <div style="position:relative;width:64px;height:64px;border-radius:12px;overflow:hidden;background:#F4E4DE;flex:none">
-                  <image-slot id="camelia-p-{{ l.id }}" placeholder="" style="position:absolute;inset:0;pointer-events:none"></image-slot>
+                  <sc-if value="{{ l.hasPhoto }}" hint-placeholder-val="{{ false }}"><img data-src="{{ l.photo }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></sc-if>
+              <sc-if value="{{ l.noPhoto }}" hint-placeholder-val="{{ true }}"><image-slot id="camelia-p-{{ l.id }}" placeholder="" style="position:absolute;inset:0;pointer-events:none"></image-slot></sc-if>
                 </div>
                 <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
                   <span style="font:600 19px/1.15 'Cormorant Garamond',serif;color:#3B2A22">{{ l.name }}</span>
@@ -389,9 +391,28 @@ html{scroll-behavior:smooth}
 </main>
 </sc-if>
 
+<sc-if value="{{ isLogin }}" hint-placeholder-val="{{ false }}">
+<main data-screen-label="Dueña · Acceso" style="min-height:80vh;display:flex;align-items:center;justify-content:center;padding:48px 20px;background:#F7F1EA">
+  <form onSubmit="{{ doLogin }}" style="width:100%;max-width:400px;background:#FFFCF8;border:1px solid #E4D6C8;border-radius:22px;padding:32px;display:flex;flex-direction:column;gap:18px">
+    <div style="display:flex;align-items:center;gap:12px;font:600 13px 'DM Sans',sans-serif;text-transform:uppercase;letter-spacing:.2em;color:#8A6A3F"><span style="width:28px;height:1px;background:#B8925A"></span>Panel de la dueña</div>
+    <h1 style="margin:0;font:500 38px/1.1 'Cormorant Garamond',serif;color:#3B2A22">Iniciar sesión</h1>
+    <label style="display:flex;flex-direction:column;gap:8px;font:500 13px 'DM Sans',sans-serif;color:#5A4336">Correo<input type="email" autocomplete="email" value="{{ loginEmail }}" onChange="{{ setLoginEmail }}" style="font:400 16px 'DM Sans',sans-serif;color:#3B2A22;padding:12px 14px;border:1px solid #E4D6C8;border-radius:12px;background:#F7F1EA"></label>
+    <label style="display:flex;flex-direction:column;gap:8px;font:500 13px 'DM Sans',sans-serif;color:#5A4336">Contraseña<input type="password" autocomplete="current-password" value="{{ loginPass }}" onChange="{{ setLoginPass }}" style="font:400 16px 'DM Sans',sans-serif;color:#3B2A22;padding:12px 14px;border:1px solid #E4D6C8;border-radius:12px;background:#F7F1EA"></label>
+    <sc-if value="{{ hasLoginErr }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font:500 14px 'DM Sans',sans-serif;color:#7A1C22">{{ loginErr }}</p></sc-if>
+    <button type="submit" style="cursor:pointer;border:0;border-radius:999px;padding:16px 24px;background:#7A1C22;color:#F7F1EA;font:600 14px 'DM Sans',sans-serif;letter-spacing:.06em" style-hover="background:#5E151A">{{ loginBtn }}</button>
+  </form>
+</main>
+</sc-if>
+
 <sc-if value="{{ isOwner }}" hint-placeholder-val="{{ false }}">
 <main data-screen-label="Dueña · Panel" style="background:#F7F1EA;min-height:100vh">
   <div style="max-width:1200px;margin:0 auto;padding:48px 24px 96px;display:flex;flex-direction:column;gap:32px">
+    <sc-if value="{{ authed }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font:500 13px 'DM Sans',sans-serif;color:#5A4336">
+        <span style="display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:{{ syncDot }}"></span>{{ syncLabel }}</span>
+        <button onClick="{{ logout }}" style="cursor:pointer;border:1px solid #E4D6C8;background:transparent;border-radius:999px;padding:8px 16px;font:500 13px 'DM Sans',sans-serif;color:#5A4336" style-hover="background:#F4E4DE">Cerrar sesión</button>
+      </div>
+    </sc-if>
     <section style="position:relative;overflow:hidden;border-radius:22px;padding:clamp(24px,5vw,40px);background:radial-gradient(ellipse 70% 60% at 100% 0%,rgba(228,201,160,.22),transparent 70%),#5E151A;color:#F7F1EA;display:flex;flex-direction:column;gap:28px">
       <div style="display:flex;flex-direction:column;gap:12px">
         <div style="display:flex;align-items:center;gap:12px;font:600 13px 'DM Sans',sans-serif;text-transform:uppercase;letter-spacing:.2em;color:#E4C9A0"><span style="width:28px;height:1px;background:#C9A46A"></span>Panel de la dueña</div>
@@ -452,8 +473,12 @@ html{scroll-behavior:smooth}
         <sc-for list="{{ adminItems }}" as="p" hint-placeholder-count="6">
           <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;background:#FFFCF8;border:1px solid #E4D6C8;border-radius:16px;padding:14px 18px;opacity:{{ p.rowOpacity }}">
             <div style="position:relative;width:64px;height:64px;border-radius:12px;overflow:hidden;background:#F4E4DE;flex:none">
-              <image-slot id="camelia-p-{{ p.id }}" placeholder="Foto" style="position:absolute;inset:0"></image-slot>
+              <sc-if value="{{ p.hasPhoto }}" hint-placeholder-val="{{ false }}"><img data-src="{{ p.photo }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></sc-if>
+              <sc-if value="{{ p.noPhoto }}" hint-placeholder-val="{{ true }}"><image-slot id="camelia-p-{{ p.id }}" placeholder="Foto" style="position:absolute;inset:0"></image-slot></sc-if>
             </div>
+            <sc-if value="{{ p.canUpload }}" hint-placeholder-val="{{ false }}">
+              <label style="cursor:pointer;flex:none;font:500 12px 'DM Sans',sans-serif;color:#7A1C22;border:1px dashed #D9B77E;border-radius:999px;padding:8px 14px;background:#FFFCF8" style-hover="background:#F4E4DE">{{ p.uploadLabel }}<input type="file" accept="image/*" onChange="{{ p.onPhoto }}" style="display:none"></label>
+            </sc-if>
             <div style="display:flex;flex-direction:column;gap:6px;flex:2 1 220px;min-width:0">
               <input value="{{ p.name }}" onChange="{{ p.setName }}" aria-label="Nombre" style="font:600 20px 'Cormorant Garamond',serif;color:#3B2A22;border:1px solid transparent;border-radius:8px;padding:4px 8px;background:transparent;width:100%" style-hover="border-color:#E4D6C8">
               <input value="{{ p.material }}" onChange="{{ p.setMaterial }}" aria-label="Descripción" style="font:400 13px 'DM Sans',sans-serif;color:#5A4336;border:1px solid transparent;border-radius:8px;padding:4px 8px;background:transparent;width:100%" style-hover="border-color:#E4D6C8">
@@ -631,6 +656,109 @@ html{scroll-behavior:smooth}
 <script type="text/x-dc" data-dc-script data-props="{&quot;startView&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;cliente&quot;,&quot;dueña&quot;],&quot;default&quot;:&quot;cliente&quot;,&quot;tsType&quot;:&quot;'cliente'|'dueña'&quot;},&quot;showMarquee&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;currency&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;$&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
 class Component extends DCLogic {
   static KEY = 'camelia-data-v1';
+  static SB_URL = 'https://jukpaqtriemqvxormrgb.supabase.co';
+  static SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp1a3BhcXRyaWVtcXZ4b3JtcmdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzODY1ODQsImV4cCI6MjEwNTk2MjU4NH0.4PPIVK2HvvgwrGEtNVn7CozqDCldvlFWnK2rpgrOmHE';
+  static toRow(p) { return { id: p.id, name: p.name || '', cat: p.cat, material: p.material || '', price: Number(p.price) || 0, cost: Number(p.cost) || 0, stock: Math.max(0, p.stock | 0), visible: !!p.visible, featured: !!p.featured, photo_path: p.photo_path || null }; }
+  static fotoUrl(path) { return path ? Component.SB_URL + '/storage/v1/object/public/camelia-fotos/' + path : ''; }
+  static mapP(r) { return { id: r.id, name: r.name, cat: r.cat, material: r.material, price: Number(r.price), cost: Number(r.cost || 0), stock: r.stock, visible: r.visible, featured: r.featured, photo_path: r.photo_path, photo: Component.fotoUrl(r.photo_path) }; }
+  static async compress(file, maxDim = 1000, maxBytes = 150 * 1024) {
+    const bmp = await createImageBitmap(file);
+    let dim = Math.min(maxDim, Math.max(bmp.width, bmp.height));
+    for (let i = 0; i < 4; i++) {
+      const sc = dim / Math.max(bmp.width, bmp.height), c = document.createElement('canvas');
+      c.width = Math.round(bmp.width * sc); c.height = Math.round(bmp.height * sc);
+      const ctx = c.getContext('2d'); ctx.fillStyle = '#F7F1EA'; ctx.fillRect(0, 0, c.width, c.height); ctx.drawImage(bmp, 0, 0, c.width, c.height);
+      for (let q = 0.8; q >= 0.45; q -= 0.07) {
+        let b = await new Promise(r => c.toBlob(r, 'image/webp', q));
+        if (!b || b.type !== 'image/webp') b = await new Promise(r => c.toBlob(r, 'image/jpeg', q));
+        if (b && b.size <= maxBytes) return b;
+      }
+      dim = Math.round(dim * 0.8);
+    }
+    throw new Error('la foto no se pudo reducir a menos de 150 KB');
+  }
+  async initDb() {
+    try {
+      const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2');
+      this.db = createClient(Component.SB_URL, Component.SB_KEY, { db: { schema: 'camelia' } });
+      const { data } = await this.db.auth.getSession();
+      let admin = false;
+      if (data.session) { const r = await this.db.rpc('is_admin'); admin = !!r.data; }
+      this.setState({ authed: admin });
+      await this.loadAll(admin);
+      if (admin) this.startPoll();
+    } catch (e) { console.warn('Supabase no disponible, uso datos locales', e); this.setState({ dbError: true, loginErr: 'No se pudo conectar con la base de datos. Revisa tu internet y recarga la página.' }); }
+  }
+  syncImgs() { requestAnimationFrame(() => document.querySelectorAll('img[data-src]').forEach(i => { const u = i.dataset.src; if (u && !u.includes('{{') && i.getAttribute('src') !== u) i.src = u; })); }
+  startPoll() { clearInterval(this.poll); this.poll = setInterval(() => this.loadOrders(), 30000); }
+  async loadAll(admin) {
+    const pr = await this.db.from('promo').select('*').eq('id', 1).maybeSingle();
+    const promo = pr.data ? { active: pr.data.active, title: pr.data.title, pct: pr.data.pct, scope: pr.data.scope } : this.state.promo;
+    this.lastPromo = JSON.stringify({ active: !!promo.active, title: promo.title || '', pct: Number(promo.pct), scope: promo.scope });
+    const r = admin ? await this.db.from('products').select('*').order('created_at') : await this.db.from('catalogo').select('*');
+    if (r.error) throw r.error;
+    const products = r.data.map(x => Component.mapP(admin ? x : { ...x, stock: x.disponible, visible: true, cost: 0 }));
+    this.lastP = admin ? new Map(products.map(p => [p.id, JSON.stringify(Component.toRow(p))])) : null;
+    this.setState({ promo, products, dbReady: true });
+    if (admin) await this.loadOrders();
+  }
+  async loadOrders() {
+    const r = await this.db.from('orders').select('*, order_lines(*)').order('created_at', { ascending: false });
+    if (r.error) return console.warn(r.error);
+    this.setState({ orders: r.data.map(o => ({ id: o.id, client: o.client, phone: o.phone, note: o.note, product: o.summary, price: Number(o.total), status: o.status,
+      date: new Date(o.created_at).toLocaleDateString('es', { day: 'numeric', month: 'short' }),
+      lines: (o.order_lines || []).map(l => ({ id: l.product_id, qty: l.qty, unit: Number(l.unit), cost: Number(l.cost) })) })) });
+  }
+  async reloadProducts() {
+    const r = await this.db.from('products').select('*').order('created_at'); if (r.error) return;
+    const products = r.data.map(Component.mapP);
+    this.lastP = new Map(products.map(p => [p.id, JSON.stringify(Component.toRow(p))]));
+    this.setState({ products });
+  }
+  queueSync() { clearTimeout(this.tSync); if (this.state.sync !== 'saving') this.setState({ sync: 'saving' }); this.tSync = setTimeout(() => this.pushChanges(), 800); }
+  async pushChanges() {
+    try {
+      const rows = this.state.products.map(Component.toRow);
+      const changed = rows.filter(r => this.lastP.get(r.id) !== JSON.stringify(r));
+      const ids = new Set(rows.map(r => r.id)), gone = [...this.lastP.keys()].filter(id => !ids.has(id));
+      if (changed.length) { const r = await this.db.from('products').upsert(changed); if (r.error) throw r.error; }
+      if (gone.length) { const r = await this.db.from('products').delete().in('id', gone); if (r.error) throw r.error; }
+      changed.forEach(r => this.lastP.set(r.id, JSON.stringify(r))); gone.forEach(id => this.lastP.delete(id));
+      const pr = this.state.promo, prow = { active: !!pr.active, title: pr.title || '', pct: Math.min(90, Math.max(1, Number(pr.pct) || 1)), scope: pr.scope };
+      if (JSON.stringify(prow) !== this.lastPromo) { const r = await this.db.from('promo').update(prow).eq('id', 1); if (r.error) throw r.error; this.lastPromo = JSON.stringify(prow); }
+      this.setState({ sync: 'ok' });
+    } catch (e) { console.warn(e); this.setState({ sync: 'error' }); }
+  }
+  async doLogin(e) {
+    e?.preventDefault?.(); if (!this.db) return;
+    this.setState({ loginBusy: true, loginErr: '' });
+    const r = await this.db.auth.signInWithPassword({ email: (this.state.loginEmail || '').trim(), password: this.state.loginPass || '' });
+    if (r.error) return this.setState({ loginBusy: false, loginErr: 'Correo o contraseña incorrectos.' });
+    const a = await this.db.rpc('is_admin');
+    if (!a.data) { await this.db.auth.signOut(); return this.setState({ loginBusy: false, loginErr: 'Esta cuenta no tiene acceso al panel.' }); }
+    this.setState({ authed: true, loginBusy: false, loginPass: '' });
+    await this.loadAll(true); this.startPoll();
+  }
+  async logout() { clearInterval(this.poll); await this.db.auth.signOut(); this.lastP = null; this.setState({ authed: false, orders: [] }); await this.loadAll(false); }
+  async uploadPhoto(p, file) {
+    if (!file || !this.db) return;
+    this.setState({ uploading: p.id });
+    try {
+      const blob = await Component.compress(file);
+      const path = 'productos/' + p.id + '-' + Date.now() + (blob.type === 'image/webp' ? '.webp' : '.jpg');
+      const up = await this.db.storage.from('camelia-fotos').upload(path, blob, { contentType: blob.type, cacheControl: '31536000' });
+      if (up.error) throw up.error;
+      const old = p.photo_path;
+      this.upd(p.id, { photo_path: path, photo: Component.fotoUrl(path) });
+      if (old) this.db.storage.from('camelia-fotos').remove([old]);
+    } catch (e) { alert('No se pudo subir la foto: ' + (e.message || e)); }
+    this.setState({ uploading: null });
+  }
+  createRemoteOrder(o, items) {
+    if (!this.db) return false;
+    this.db.rpc('crear_pedido', { payload: { client: o.client, phone: o.phone, note: o.note, items } }).then(r => { if (r.error) console.warn(r.error); else if (this.state.authed) this.loadOrders(); });
+    return true;
+  }
   static SEED = [
     { id: 'p1', name: 'Anillo Camelia', cat: 'Anillos', material: 'Plata 925 con baño de oro', price: 48, cost: 20, stock: 6, visible: true, featured: true },
     { id: 'p2', name: 'Aretes Perla Luna', cat: 'Aretes', material: 'Perla de agua dulce y oro laminado', price: 36, cost: 15, stock: 10, visible: true, featured: false },
@@ -656,14 +784,16 @@ class Component extends DCLogic {
       modal: null, sent: null, fName: '', fPhone: '', fNote: ''
     };
   }
-  componentDidMount() { this.onHash = () => { const a = Component.adminUrl(); this.setState(a ? { view: 'owner' } : { view: 'client' }); }; window.addEventListener('hashchange', this.onHash); this.reveal(); this.onResize = () => this.setState({ w: window.innerWidth }); window.addEventListener('resize', this.onResize); this.onResize(); }
+  componentDidMount() { this.onHash = () => { const a = Component.adminUrl(); this.setState(a ? { view: 'owner' } : { view: 'client' }); }; window.addEventListener('hashchange', this.onHash); this.reveal(); this.onResize = () => this.setState({ w: window.innerWidth }); window.addEventListener('resize', this.onResize); this.onResize(); this.initDb(); }
   componentDidUpdate(pp, ps = {}) {
     if (ps.products !== this.state.products || ps.orders !== this.state.orders || ps.promo !== this.state.promo || ps.cart !== this.state.cart) {
       try { localStorage.setItem(Component.KEY, JSON.stringify({ products: this.state.products, orders: this.state.orders, promo: this.state.promo, cart: this.state.cart })); } catch (e) {}
     }
     if (ps.view !== this.state.view) this.reveal();
+    this.syncImgs();
+    if (this.db && this.state.authed && this.lastP && (ps.products !== this.state.products || ps.promo !== this.state.promo)) this.queueSync();
   }
-  componentWillUnmount() { this.io?.disconnect(); window.removeEventListener('resize', this.onResize); }
+  componentWillUnmount() { clearInterval(this.poll); clearTimeout(this.tSync); this.io?.disconnect(); window.removeEventListener('resize', this.onResize); }
   reveal() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     if (!this.io) this.io = new IntersectionObserver(es => es.forEach(e => {
@@ -758,7 +888,7 @@ class Component extends DCLogic {
     const finalPrice = p => promoOn(p) ? Math.round(p.price * (100 - pct)) / 100 : p.price;
     const shopItems = shop.map(p => {
       const soldOut = p.stock <= 0, fp = finalPrice(p);
-      return { ...p, soldOut, onPromo: promoOn(p), pctLabel: '−' + pct + '%', oldPrice: money(p.price), priceLabel: money(fp), btnLabel: soldOut ? 'Agotado' : 'Agregar al carrito', btnOpacity: soldOut ? 0.45 : 1,
+      return { ...p, hasPhoto: !!p.photo, noPhoto: !p.photo, soldOut, onPromo: promoOn(p), pctLabel: '−' + pct + '%', oldPrice: money(p.price), priceLabel: money(fp), btnLabel: soldOut ? 'Agotado' : 'Agregar al carrito', btnOpacity: soldOut ? 0.45 : 1,
         order: () => { if (!soldOut) this.addToCart(p.id); } };
     });
     const setPromo = patch => this.setState(ss => ({ promo: { ...ss.promo, ...patch } }));
@@ -775,11 +905,15 @@ class Component extends DCLogic {
       const st = { Nuevo: ['#F3E2C3', '#7A5A30', '#D9B77E'], Confirmado: ['#7A1C22', '#F7F1EA', '#7A1C22'], Entregado: ['#F4E4DE', '#5A4336', '#E4D6C8'], Cancelado: ['#FFFCF8', '#8A6A3F', '#E4D6C8'] }[o.status] || ['#FFFCF8', '#7A1C22', '#E4D6C8'];
       return { ...o, priceLabel: o.price ? money(o.price) : '—', detail: [o.phone, o.note].filter(Boolean).join(' · ') || 'Sin nota',
         stBg: st[0], stFg: st[1], stBorder: st[2],
-        setStatus: e => this.setState(ss => ({ orders: ss.orders.map(x => x.id === o.id ? { ...x, status: e.target.value } : x) })),
-        remove: () => this.setState(ss => ({ orders: ss.orders.filter(x => x.id !== o.id) })) };
+        setStatus: e => { const v = e.target.value; this.setState(ss => ({ orders: ss.orders.map(x => x.id === o.id ? { ...x, status: v } : x) }));
+          if (this.db && s.authed) this.db.from('orders').update({ status: v }).eq('id', o.id).then(r => { if (r.error) console.warn(r.error); this.reloadProducts(); }); },
+        remove: () => { if (!confirm('¿Eliminar el pedido de ' + o.client + '?')) return; this.setState(ss => ({ orders: ss.orders.filter(x => x.id !== o.id) }));
+          if (this.db && s.authed) this.db.from('orders').delete().eq('id', o.id).then(r => { if (r.error) console.warn(r.error); }); } };
     });
     const adminItems = s.products.map(p => ({
-      ...p,
+      ...p, hasPhoto: !!p.photo, noPhoto: !p.photo, canUpload: !!(this.db && s.authed),
+      uploadLabel: s.uploading === p.id ? 'Subiendo…' : p.photo ? 'Cambiar foto' : 'Subir foto',
+      onPhoto: e => { const f = e.target.files && e.target.files[0]; e.target.value = ''; this.uploadPhoto(p, f); },
       rowOpacity: p.visible ? 1 : 0.6,
       stockLabel: p.stock <= 0 ? 'Agotado' : p.stock + ' en stock',
       stockColor: p.stock <= 0 ? '#8A6A3F' : '#3B2A22',
@@ -806,14 +940,21 @@ class Component extends DCLogic {
       const p = s.products.find(x => x.id === c.id); if (!p || !p.visible) return null;
       const qty = Math.min(c.qty, Math.max(p.stock, 0)); if (qty <= 0) return null;
       const unit = finalPrice(p);
-      return { id: p.id, name: p.name, cat: p.cat, qty, unit, unitLabel: money(unit), lineLabel: money(unit * qty), onPromo: promoOn(p), oldLabel: money(p.price),
+      return { id: p.id, name: p.name, cat: p.cat, photo: p.photo, hasPhoto: !!p.photo, noPhoto: !p.photo, qty, unit, unitLabel: money(unit), lineLabel: money(unit * qty), onPromo: promoOn(p), oldLabel: money(p.price),
         inc: () => this.setQty(p.id, Math.min(p.stock, qty + 1)), dec: () => this.setQty(p.id, qty - 1), remove: () => this.setQty(p.id, 0) };
     }).filter(Boolean);
     const cartCount = cartLines.reduce((a, l) => a + l.qty, 0);
     const cartTotal = cartLines.reduce((a, l) => a + l.unit * l.qty, 0);
     const cantCart = !s.fName.trim() || cartLines.length === 0;
     return {
-      adminMode: Component.adminUrl() || (this.props.startView ?? 'cliente') === 'dueña', isClient, isJoin: s.view === 'join', isOwner: s.view === 'owner', showNav: isClient && (s.w || 1200) >= 1100,
+      adminMode: Component.adminUrl() || (this.props.startView ?? 'cliente') === 'dueña', isClient, isJoin: s.view === 'join', isOwner: s.view === 'owner' && !!s.authed,
+      isLogin: s.view === 'owner' && !s.authed, authed: !!s.authed,
+      loginEmail: s.loginEmail || '', loginPass: s.loginPass || '', loginErr: s.loginErr || '', hasLoginErr: !!s.loginErr,
+      loginBtn: s.loginBusy ? 'Entrando…' : 'Entrar',
+      setLoginEmail: e => this.setState({ loginEmail: e.target.value }), setLoginPass: e => this.setState({ loginPass: e.target.value }),
+      doLogin: e => this.doLogin(e), logout: () => this.logout(),
+      syncLabel: s.sync === 'saving' ? 'Guardando cambios…' : s.sync === 'error' ? 'No se pudo guardar. Revisa tu conexión.' : 'Conectado · cambios guardados en línea',
+      syncDot: s.sync === 'saving' ? '#D9B77E' : s.sync === 'error' ? '#7A1C22' : '#6E8B5A', showNav: isClient && (s.w || 1200) >= 1100,
       showJoin: () => { this.setState({ view: 'join', cartOpen: false }); window.scrollTo(0, 0); },
       joinWaUrl: 'https://wa.me/593967335317?text=' + encodeURIComponent('Hola Camelia ✨, quiero información para trabajar con ustedes.'),
       logoH: mobile ? 52 : 64, tabPad: mobile ? '8px 14px' : '9px 18px',
@@ -844,7 +985,8 @@ class Component extends DCLogic {
         const msg = ['Hola Camelia ✨, soy ' + o.client + '. Quiero hacer este pedido:', ...cartLines.map(l => '• ' + l.name + ' ×' + l.qty + ' — ' + l.lineLabel),
           'Total: ' + money(cartTotal), o.note ? 'Nota: ' + o.note : '', o.phone ? 'Mi número: ' + o.phone : ''].filter(Boolean).join('\n');
         window.open('https://wa.me/593967335317?text=' + encodeURIComponent(msg), '_blank', 'noopener');
-        this.setState(ss => ({ orders: [o, ...ss.orders], cart: [], cartSent: o.client, fName: '', fPhone: '', fNote: '' }));
+        const remote = this.createRemoteOrder(o, cartLines.map(l => ({ id: l.id, qty: l.qty })));
+        this.setState(ss => ({ orders: remote ? ss.orders : [o, ...ss.orders], cart: [], cartSent: o.client, fName: '', fPhone: '', fNote: '' }));
       },
       closeModal: () => this.setState({ modal: null, sent: null }),
       submitOrder: () => {
@@ -858,7 +1000,8 @@ class Component extends DCLogic {
           m.id ? 'Me interesa: ' + o.product + ' (' + money(o.price) + ').' : 'Quisiera hacer una consulta.',
           o.note ? 'Nota: ' + o.note : '', o.phone ? 'Mi número: ' + o.phone : ''].filter(Boolean).join('\n');
         window.open('https://wa.me/593967335317?text=' + encodeURIComponent(msg), '_blank', 'noopener');
-        this.setState(ss => ({ orders: [o, ...ss.orders], sent: o.client, fName: '', fPhone: '', fNote: '' }));
+        const remote = this.createRemoteOrder(o, m.id ? [{ id: m.id, qty: 1 }] : []);
+        this.setState(ss => ({ orders: remote ? ss.orders : [o, ...ss.orders], sent: o.client, fName: '', fPhone: '', fNote: '' }));
       },
       metrics: [
         { value: s.products.filter(p => p.visible).length, label: 'Piezas publicadas' },
