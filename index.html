@@ -33,11 +33,12 @@ html{scroll-behavior:smooth}
   <div style="max-width:1200px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px">
     <a href="#top" aria-label="Camelia, inicio" style="display:flex;align-items:center;flex:none"><img src="assets/camelia-logo-web2.png" alt="Camelia · Joyería y Accesorios" style="height:{{ logoH }}px;width:auto;display:block"></img></a>
     <sc-if value="{{ showNav }}" hint-placeholder-val="{{ true }}">
-      <nav style="display:flex;gap:28px;flex-wrap:wrap;font:500 14px 'DM Sans',sans-serif">
+      <nav style="display:flex;gap:20px;flex-wrap:nowrap;white-space:nowrap;font:500 14px 'DM Sans',sans-serif">
         <a href="#coleccion" style="color:#5A4336;text-decoration:none" style-hover="color:#8A6A3F">Colección</a>
         <a href="#nosotros" style="color:#5A4336;text-decoration:none" style-hover="color:#8A6A3F">Nosotros</a>
         <a href="#comprar" style="color:#5A4336;text-decoration:none" style-hover="color:#8A6A3F">Cómo comprar</a>
         <a href="#contacto" style="color:#5A4336;text-decoration:none" style-hover="color:#8A6A3F">Contacto</a>
+        <button onClick="{{ showJoin }}" style="cursor:pointer;border:0;background:transparent;padding:0;font:600 14px 'DM Sans',sans-serif;color:#7A1C22" style-hover="color:#5E151A">Trabaja con nosotros</button>
       </nav>
     </sc-if>
     <div style="display:flex;align-items:center;gap:10px">
@@ -50,10 +51,12 @@ html{scroll-behavior:smooth}
         </sc-if>
       </button>
     </sc-if>
+    <sc-if value="{{ adminMode }}" hint-placeholder-val="{{ false }}">
     <div role="tablist" aria-label="Cambiar vista" style="display:flex;padding:4px;border:1px solid #E4D6C8;border-radius:999px;background:#FFFCF8;gap:2px">
       <button role="tab" onClick="{{ showClient }}" style="border:0;cursor:pointer;border-radius:999px;padding:{{ tabPad }};font:500 13px 'DM Sans',sans-serif;background:{{ tabClientBg }};color:{{ tabClientFg }}">{{ tabClientLabel }}</button>
       <button role="tab" onClick="{{ showOwner }}" style="border:0;cursor:pointer;border-radius:999px;padding:{{ tabPad }};font:500 13px 'DM Sans',sans-serif;background:{{ tabOwnerBg }};color:{{ tabOwnerFg }}">{{ tabOwnerLabel }}</button>
     </div>
+    </sc-if>
     </div>
   </div>
 </header>
@@ -61,9 +64,9 @@ html{scroll-behavior:smooth}
 <sc-if value="{{ isClient }}" hint-placeholder-val="{{ true }}">
 <main id="top" style="overflow-x:clip">
   <sc-if value="{{ promoActive }}" hint-placeholder-val="{{ false }}">
-    <a href="#coleccion" style="position:relative;overflow:hidden;display:flex;justify-content:center;align-items:center;gap:14px;padding:14px 24px;background:#7A1C22;color:#F3E2C3;text-decoration:none;font:500 14px 'DM Sans',sans-serif;letter-spacing:.04em;text-align:center;flex-wrap:wrap">
-      <span aria-hidden="true" style="position:absolute;top:0;bottom:0;left:0;width:30%;background:linear-gradient(90deg,transparent,rgba(243,226,195,.16),transparent);animation:dbSheen 6.5s ease-in-out infinite;pointer-events:none"></span>
-      <span aria-hidden="true" style="color:#C9A46A">✦</span><span style="position:relative">{{ promoText }}</span><span style="position:relative;text-decoration:underline;text-underline-offset:3px;color:#FFF3DC">Ver piezas</span>
+    <a href="#coleccion" style="position:relative;overflow:hidden;display:flex;justify-content:center;align-items:center;gap:12px 20px;padding:20px 24px;background:#7A1C22;color:#FFF3DC;text-decoration:none;font:600 18px 'DM Sans',sans-serif;letter-spacing:.03em;text-align:center;flex-wrap:wrap;border-top:2px solid #C9A46A;border-bottom:2px solid #C9A46A">
+      <span aria-hidden="true" style="position:absolute;top:0;bottom:0;left:0;width:30%;background:linear-gradient(90deg,transparent,rgba(243,226,195,.22),transparent);animation:dbSheen 4.5s ease-in-out infinite;pointer-events:none"></span>
+      <span aria-hidden="true" style="position:relative;color:#C9A46A;font-size:22px">✦</span><span style="position:relative;font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;letter-spacing:.01em">{{ promoText }}</span><span style="position:relative;display:inline-flex;align-items:center;padding:9px 20px;border-radius:999px;background:#C9A46A;color:#3A0D10;font:700 13px 'DM Sans',sans-serif;letter-spacing:.12em;text-transform:uppercase">Ver piezas →</span>
     </a>
   </sc-if>
 
@@ -216,6 +219,16 @@ html{scroll-behavior:smooth}
     </div>
   </section>
 
+  <section style="background:#5E151A">
+    <div style="max-width:1200px;margin:0 auto;padding:clamp(40px,6vw,56px) 20px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <span style="font:600 12px 'DM Sans',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#D9B77E">Trabaja con nosotros</span>
+        <h2 style="margin:0;font:500 clamp(28px,3.4vw,40px)/1.1 'Cormorant Garamond',serif;color:#F7F1EA;text-wrap:balance">¿Tienes un local o quieres emprender con joyas?</h2>
+      </div>
+      <button onClick="{{ showJoin }}" style="cursor:pointer;border:0;background:#C9A46A;color:#3A0D10;border-radius:999px;padding:16px 28px;font:700 13px 'DM Sans',sans-serif;letter-spacing:.12em;text-transform:uppercase" style-hover="background:#D9B77E">Conoce los beneficios →</button>
+    </div>
+  </section>
+
   <footer id="contacto" data-screen-label="Cliente · Contacto" style="background:#F7F1EA">
     <div style="max-width:1200px;margin:0 auto;padding:clamp(64px,10vw,104px) 20px 96px;display:flex;flex-direction:column;align-items:center;gap:32px;text-align:center">
       <h2 data-reveal="0" style="margin:0;font:500 clamp(38px,4.4vw,58px)/1.05 'Cormorant Garamond',serif;color:#3B2A22;text-wrap:balance">¿Buscas algo <em style="font-style:italic;background:linear-gradient(100deg,#7A5A30 0%,#B8925A 25%,#D9B77E 50%,#B8925A 75%,#7A5A30 100%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:dbGold 6s linear infinite">especial</em>?</h2>
@@ -338,6 +351,44 @@ html{scroll-behavior:smooth}
 </main>
 </sc-if>
 
+<sc-if value="{{ isJoin }}" hint-placeholder-val="{{ false }}">
+<main data-screen-label="Cliente · Trabaja con nosotros" style="overflow-x:clip">
+  <section style="background:radial-gradient(ellipse 60% 70% at 0% 0%,rgba(228,201,160,.35),transparent 70%),#F7F1EA">
+    <div style="max-width:1200px;margin:0 auto;padding:clamp(40px,7vw,72px) 20px clamp(48px,8vw,80px);display:flex;flex-direction:column;gap:24px">
+      <button onClick="{{ showClient }}" style="align-self:flex-start;cursor:pointer;border:0;background:transparent;padding:0;font:500 14px 'DM Sans',sans-serif;color:#8A6A3F" style-hover="color:#3B2A22">← Volver a la tienda</button>
+      <div style="display:flex;align-items:center;gap:12px;font:600 13px 'DM Sans',sans-serif;text-transform:uppercase;letter-spacing:.2em;color:#8A6A3F"><span style="width:28px;height:1px;background:#B8925A"></span>Trabaja con nosotros</div>
+      <h1 style="margin:0;max-width:780px;font:500 clamp(44px,6vw,76px)/1.02 'Cormorant Garamond',serif;color:#3B2A22;text-wrap:balance">Crece con <em style="font-style:italic;background:linear-gradient(100deg,#7A5A30 0%,#B8925A 25%,#D9B77E 50%,#B8925A 75%,#7A5A30 100%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:dbGold 6s linear infinite">Camelia</em></h1>
+      <p style="margin:0;max-width:520px;font:400 18px/1.65 'DM Sans',sans-serif;color:#5A4336;text-wrap:pretty">Vende nuestras joyas en tu local o empieza tu propio negocio con nuestro respaldo.</p>
+    </div>
+  </section>
+  <section style="background:#F4E4DE">
+    <div style="max-width:1200px;margin:0 auto;padding:clamp(56px,9vw,96px) 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:24px">
+      <div style="background:#FFFCF8;border:1px solid #E4D6C8;border-radius:18px;padding:32px;display:flex;flex-direction:column;gap:14px">
+        <span style="font:500 52px/1 'Cormorant Garamond',serif;color:#B8925A">1</span>
+        <h3 style="margin:0;font:600 26px 'Cormorant Garamond',serif;color:#3B2A22">Mejores precios para locales</h3>
+        <p style="margin:0;font:400 15px/1.6 'DM Sans',sans-serif;color:#5A4336;text-wrap:pretty">Precios especiales al por mayor para tiendas y locales que quieran ofrecer Camelia a sus clientas.</p>
+      </div>
+      <div style="background:#FFFCF8;border:1px solid #E4D6C8;border-radius:18px;padding:32px;display:flex;flex-direction:column;gap:14px">
+        <span style="font:500 52px/1 'Cormorant Garamond',serif;color:#B8925A">2</span>
+        <h3 style="margin:0;font:600 26px 'Cormorant Garamond',serif;color:#3B2A22">Beneficios para emprendedores</h3>
+        <p style="margin:0;font:400 15px/1.6 'DM Sans',sans-serif;color:#5A4336;text-wrap:pretty">Empieza a vender joyas con condiciones pensadas para quienes recién arrancan su negocio.</p>
+      </div>
+      <div style="background:#FFFCF8;border:1px solid #E4D6C8;border-radius:18px;padding:32px;display:flex;flex-direction:column;gap:14px">
+        <span style="font:500 52px/1 'Cormorant Garamond',serif;color:#B8925A">3</span>
+        <h3 style="margin:0;font:600 26px 'Cormorant Garamond',serif;color:#3B2A22">Escuela de ventas personalizada</h3>
+        <p style="margin:0;font:400 15px/1.6 'DM Sans',sans-serif;color:#5A4336;text-wrap:pretty">Te acompañamos con capacitación a tu medida para que aprendas a vender más y mejor.</p>
+      </div>
+    </div>
+  </section>
+  <section style="background:radial-gradient(ellipse 70% 60% at 100% 0%,rgba(228,201,160,.22),transparent 70%),#5E151A">
+    <div style="max-width:1200px;margin:0 auto;padding:clamp(56px,9vw,96px) 20px;display:flex;flex-direction:column;align-items:flex-start;gap:24px">
+      <h2 style="margin:0;max-width:640px;font:500 clamp(34px,4.4vw,54px)/1.08 'Cormorant Garamond',serif;color:#F7F1EA;text-wrap:balance">Cuéntanos sobre tu local o tu emprendimiento</h2>
+      <a href="{{ joinWaUrl }}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;background:#C9A46A;color:#3A0D10;border-radius:999px;padding:18px 32px;font:700 14px 'DM Sans',sans-serif;letter-spacing:.1em;text-transform:uppercase;text-decoration:none" style-hover="background:#D9B77E">Escríbenos por WhatsApp</a>
+    </div>
+  </section>
+</main>
+</sc-if>
+
 <sc-if value="{{ isOwner }}" hint-placeholder-val="{{ false }}">
 <main data-screen-label="Dueña · Panel" style="background:#F7F1EA;min-height:100vh">
   <div style="max-width:1200px;margin:0 auto;padding:48px 24px 96px;display:flex;flex-direction:column;gap:32px">
@@ -386,9 +437,10 @@ html{scroll-behavior:smooth}
     </section>
 
     <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
-      <div style="display:flex;gap:8px">
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button onClick="{{ tabPieces }}" style="cursor:pointer;border-radius:999px;padding:11px 20px;font:500 14px 'DM Sans',sans-serif;border:1px solid {{ tPiecesBorder }};background:{{ tPiecesBg }};color:{{ tPiecesFg }}">Piezas ({{ productCount }})</button>
         <button onClick="{{ tabOrders }}" style="cursor:pointer;border-radius:999px;padding:11px 20px;font:500 14px 'DM Sans',sans-serif;border:1px solid {{ tOrdersBorder }};background:{{ tOrdersBg }};color:{{ tOrdersFg }}">Pedidos ({{ orderCount }})</button>
+        <button onClick="{{ tabFinance }}" style="cursor:pointer;border-radius:999px;padding:11px 20px;font:500 14px 'DM Sans',sans-serif;border:1px solid {{ tFinBorder }};background:{{ tFinBg }};color:{{ tFinFg }}">Inventario y finanzas</button>
       </div>
       <sc-if value="{{ onPieces }}" hint-placeholder-val="{{ true }}">
         <button onClick="{{ addProduct }}" style="position:relative;overflow:hidden;cursor:pointer;border:0;background:#7A1C22;color:#F7F1EA;border-radius:999px;padding:14px 26px;font:500 14px 'DM Sans',sans-serif"><span aria-hidden="true" style="position:absolute;top:0;bottom:0;left:0;width:30%;background:linear-gradient(90deg,transparent,rgba(243,226,195,.16),transparent);animation:dbSheen 6.5s ease-in-out infinite"></span><span style="position:relative">+ Agregar pieza</span></button>
@@ -411,6 +463,9 @@ html{scroll-behavior:smooth}
             </select>
             <label style="display:flex;align-items:center;gap:6px;font:500 13px 'DM Sans',sans-serif;color:#8A6A3F">$
               <input type="number" min="0" value="{{ p.price }}" onChange="{{ p.setPrice }}" aria-label="Precio" style="width:84px;font:500 15px 'DM Sans',sans-serif;color:#3B2A22;border:1px solid #E4D6C8;border-radius:10px;padding:10px 10px;background:#F7F1EA">
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;font:500 12px 'DM Sans',sans-serif;color:#8A6A3F">Costo $
+              <input type="number" min="0" value="{{ p.cost }}" onChange="{{ p.setCost }}" aria-label="Costo" style="width:76px;font:500 15px 'DM Sans',sans-serif;color:#3B2A22;border:1px dashed #D9B77E;border-radius:10px;padding:10px 10px;background:#FFFCF8">
             </label>
             <div style="display:flex;align-items:center;gap:4px;border:1px solid #E4D6C8;border-radius:999px;padding:3px">
               <button onClick="{{ p.dec }}" aria-label="Menos stock" style="cursor:pointer;width:30px;height:30px;border-radius:50%;border:0;background:transparent;color:#3B2A22;font:500 16px 'DM Sans',sans-serif" style-hover="background:#F4E4DE">−</button>
@@ -448,6 +503,127 @@ html{scroll-behavior:smooth}
         </sc-for>
       </div>
     </sc-if>
+
+    <sc-if value="{{ onFinance }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:28px">
+        <div style="display:flex;align-items:center;gap:10px;font:400 13px/1.5 'DM Sans',sans-serif;color:#5A4336"><span style="padding:4px 10px;border-radius:999px;background:#F3E2C3;color:#7A5A30;font:600 11px 'DM Sans',sans-serif;letter-spacing:.14em;text-transform:uppercase">Solo interno</span>Costos, márgenes e inventario no se muestran a las clientas.</div>
+        <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px">
+          <div style="background:#FFFCF8;border:1px solid #E4D6C8;border-radius:20px;padding:22px 24px;display:flex;flex-direction:column;gap:16px;min-width:0">
+            <h3 style="margin:0;font:600 22px 'Cormorant Garamond',serif;color:#3B2A22">¿Cuánto entró y cuánto quedó?</h3>
+            <p style="margin:-10px 0 0;font:400 13px/1.5 'DM Sans',sans-serif;color:#5A4336">Ventas confirmadas o entregadas, menos lo que costaron las piezas.</p>
+            <sc-if value="{{ noSales }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:22px;border:1px dashed #E4D6C8;border-radius:14px;text-align:center;font:400 14px 'DM Sans',sans-serif;color:#5A4336">Aún no hay ventas confirmadas. Marca un pedido como Confirmado para verlo aquí.</div>
+            </sc-if>
+            <sc-if value="{{ hasSales }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-direction:column;gap:14px">
+                <sc-for list="{{ flowBars }}" as="b" hint-placeholder-count="3">
+                  <div style="display:flex;flex-direction:column;gap:6px">
+                    <div style="display:flex;justify-content:space-between;gap:12px;font:500 13px 'DM Sans',sans-serif;color:#3B2A22"><span>{{ b.label }}</span><strong style="font:600 18px 'Cormorant Garamond',serif">{{ b.value }}</strong></div>
+                    <div style="height:22px;border-radius:8px;background:#F7F1EA;overflow:hidden"><div style="height:100%;width:{{ b.w }};background:{{ b.color }};border-radius:8px;transition:width .5s"></div></div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+          <div style="background:#FFFCF8;border:1px solid #E4D6C8;border-radius:20px;padding:22px 24px;display:flex;flex-direction:column;gap:16px;min-width:0">
+            <h3 style="margin:0;font:600 22px 'Cormorant Garamond',serif;color:#3B2A22">Tu inventario en dinero</h3>
+            <p style="margin:-10px 0 0;font:400 13px/1.5 'DM Sans',sans-serif;color:#5A4336">Si vendes todo lo que tienes hoy, recibirías <strong style="color:#3B2A22">{{ invRetailShort }}</strong>.</p>
+            <div style="display:flex;height:40px;border-radius:12px;overflow:hidden;background:#F4E4DE">
+              <div style="width:{{ invCostW }};background:#D9B77E;transition:width .5s"></div>
+              <div style="width:{{ invProfitW }};background:#7A1C22;transition:width .5s"></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div style="display:flex;gap:10px;align-items:flex-start"><span style="width:12px;height:12px;border-radius:3px;background:#D9B77E;margin-top:4px;flex:none"></span><div style="display:flex;flex-direction:column;gap:2px"><strong style="font:600 22px 'Cormorant Garamond',serif;color:#3B2A22">{{ invCostShort }}</strong><span style="font:400 13px 'DM Sans',sans-serif;color:#5A4336">Lo que invertiste</span></div></div>
+              <div style="display:flex;gap:10px;align-items:flex-start"><span style="width:12px;height:12px;border-radius:3px;background:#7A1C22;margin-top:4px;flex:none"></span><div style="display:flex;flex-direction:column;gap:2px"><strong style="font:600 22px 'Cormorant Garamond',serif;color:#3B2A22">{{ invProfitShort }}</strong><span style="font:400 13px 'DM Sans',sans-serif;color:#5A4336">Lo que ganarías</span></div></div>
+            </div>
+          </div>
+          <div style="background:#FFFCF8;border:1px solid #E4D6C8;border-radius:20px;padding:22px 24px;display:flex;flex-direction:column;gap:16px;min-width:0">
+            <h3 style="margin:0;font:600 22px 'Cormorant Garamond',serif;color:#3B2A22">Valor por categoría</h3>
+            <div style="display:flex;gap:16px;font:400 12px 'DM Sans',sans-serif;color:#5A4336"><span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#7A1C22"></span>Valor de venta</span><span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:#D9B77E"></span>Costo</span></div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <sc-for list="{{ catBars }}" as="c" hint-placeholder-count="4">
+                <div style="display:flex;flex-direction:column;gap:5px">
+                  <div style="display:flex;justify-content:space-between;gap:12px;font:500 13px 'DM Sans',sans-serif;color:#3B2A22"><span>{{ c.cat }} <span style="color:#8A6A3F">· {{ c.units }}</span></span><span>{{ c.retailLabel }}</span></div>
+                  <div style="height:14px;border-radius:999px;background:#F4E4DE;overflow:hidden"><div style="height:100%;width:{{ c.wRetail }};background:#7A1C22;border-radius:999px;transition:width .5s"></div></div>
+                  <div style="height:8px;border-radius:999px;background:#F7F1EA;overflow:hidden"><div style="height:100%;width:{{ c.wCost }};background:#D9B77E;border-radius:999px;transition:width .5s"></div></div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="background:#FFFCF8;border:1px solid #E4D6C8;border-radius:20px;padding:22px 24px;display:flex;flex-direction:column;gap:16px;min-width:0">
+            <h3 style="margin:0;font:600 22px 'Cormorant Garamond',serif;color:#3B2A22">Stock por pieza</h3>
+            <p style="margin:-10px 0 0;font:400 13px/1.5 'DM Sans',sans-serif;color:#5A4336">Primero las que se están acabando. Dorado claro: 3 o menos.</p>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <sc-for list="{{ stockBars }}" as="b" hint-placeholder-count="8">
+                <div style="display:grid;grid-template-columns:minmax(0,140px) minmax(0,1fr) 64px;align-items:center;gap:12px;font:500 13px 'DM Sans',sans-serif;color:#3B2A22">
+                  <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ b.name }}</span>
+                  <div style="height:14px;border-radius:999px;background:#F4E4DE;overflow:hidden"><div style="height:100%;width:{{ b.w }};background:{{ b.color }};border-radius:999px;transition:width .5s"></div></div>
+                  <span style="text-align:right;color:{{ b.fg }}">{{ b.label }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="background:#FFFCF8;border:1px solid #E4D6C8;border-radius:20px;padding:22px 24px;display:flex;flex-direction:column;gap:16px;min-width:0">
+            <h3 style="margin:0;font:600 22px 'Cormorant Garamond',serif;color:#3B2A22">Margen de ganancia por pieza</h3>
+            <p style="margin:-10px 0 0;font:400 13px/1.5 'DM Sans',sans-serif;color:#5A4336">De cada dólar vendido, cuánto te queda.</p>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <sc-for list="{{ marginBars }}" as="b" hint-placeholder-count="8">
+                <div style="display:grid;grid-template-columns:minmax(0,140px) minmax(0,1fr) 48px;align-items:center;gap:12px;font:500 13px 'DM Sans',sans-serif;color:#3B2A22">
+                  <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ b.name }}</span>
+                  <div style="height:14px;border-radius:999px;background:#F4E4DE;overflow:hidden"><div style="height:100%;width:{{ b.w }};background:{{ b.color }};border-radius:999px;transition:width .5s"></div></div>
+                  <span style="text-align:right;font-weight:600">{{ b.label }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </section>
+        <section style="display:flex;flex-direction:column;gap:12px">
+          <h3 style="margin:0;font:600 26px 'Cormorant Garamond',serif;color:#3B2A22">Flujo de caja</h3>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+            <sc-for list="{{ flowStats }}" as="m" hint-placeholder-count="4">
+              <div style="background:#FFFCF8;border:1px solid #E4D6C8;border-radius:16px;padding:18px 20px;display:flex;flex-direction:column;gap:6px">
+                <span style="font:600 30px 'Cormorant Garamond',serif;color:{{ m.color }}">{{ m.value }}</span>
+                <span style="font:500 13px 'DM Sans',sans-serif;color:#5A4336">{{ m.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </section>
+        <section style="display:flex;flex-direction:column;gap:12px">
+          <h3 style="margin:0;font:600 26px 'Cormorant Garamond',serif;color:#3B2A22">Inventario</h3>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+            <sc-for list="{{ finStats }}" as="m" hint-placeholder-count="4">
+              <div style="background:#F4E4DE;border-radius:16px;padding:18px 20px;display:flex;flex-direction:column;gap:6px">
+                <span style="font:600 30px 'Cormorant Garamond',serif;color:#3B2A22">{{ m.value }}</span>
+                <span style="font:500 13px 'DM Sans',sans-serif;color:#5A4336">{{ m.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ finItems }}" as="f" hint-placeholder-count="6">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));align-items:center;gap:14px 18px;background:#FFFCF8;border:1px solid #E4D6C8;border-radius:16px;padding:16px 20px">
+                <div style="display:flex;flex-direction:column;gap:2px;grid-column:span 2;min-width:0">
+                  <span style="font:600 20px 'Cormorant Garamond',serif;color:#3B2A22">{{ f.name }}</span>
+                  <span style="font:400 13px 'DM Sans',sans-serif;color:#5A4336">{{ f.cat }} · {{ f.soldLabel }}</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <span style="font:600 11px 'DM Sans',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#8A6A3F">Stock</span>
+                  <div style="display:flex;align-items:center;gap:4px;border:1px solid #E4D6C8;border-radius:999px;padding:3px;width:max-content">
+                    <button onClick="{{ f.dec }}" aria-label="Menos" style="cursor:pointer;width:28px;height:28px;border-radius:50%;border:0;background:transparent;color:#3B2A22;font:500 16px 'DM Sans',sans-serif" style-hover="background:#F4E4DE">−</button>
+                    <span style="min-width:74px;text-align:center;font:500 13px 'DM Sans',sans-serif;color:{{ f.stockColor }}">{{ f.stockLabel }}</span>
+                    <button onClick="{{ f.inc }}" aria-label="Más" style="cursor:pointer;width:28px;height:28px;border-radius:50%;border:0;background:transparent;color:#3B2A22;font:500 16px 'DM Sans',sans-serif" style-hover="background:#F4E4DE">+</button>
+                  </div>
+                </div>
+                <label style="display:flex;flex-direction:column;gap:6px"><span style="font:600 11px 'DM Sans',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#8A6A3F">Costo unidad</span><input type="number" min="0" value="{{ f.cost }}" onChange="{{ f.setCost }}" style="width:72px;font:500 15px 'DM Sans',sans-serif;color:#3B2A22;border:1px solid #E4D6C8;border-radius:10px;padding:8px 10px;background:#F7F1EA"></label>
+                <label style="display:flex;flex-direction:column;gap:6px"><span style="font:600 11px 'DM Sans',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#8A6A3F">Precio venta</span><input type="number" min="0" value="{{ f.price }}" onChange="{{ f.setPrice }}" style="width:72px;font:500 15px 'DM Sans',sans-serif;color:#3B2A22;border:1px solid #E4D6C8;border-radius:10px;padding:8px 10px;background:#F7F1EA"></label>
+                <div style="display:flex;flex-direction:column;gap:6px"><span style="font:600 11px 'DM Sans',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#8A6A3F">Margen</span><span style="font:600 15px 'DM Sans',sans-serif;color:{{ f.marginColor }}">{{ f.marginLabel }}</span></div>
+                <div style="display:flex;flex-direction:column;gap:6px"><span style="font:600 11px 'DM Sans',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#8A6A3F">Invertido</span><span style="font:500 15px 'DM Sans',sans-serif;color:#3B2A22">{{ f.invCostLabel }}</span></div>
+                <div style="display:flex;flex-direction:column;gap:6px"><span style="font:600 11px 'DM Sans',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#8A6A3F">Valor venta</span><span style="font:500 15px 'DM Sans',sans-serif;color:#3B2A22">{{ f.invRetailLabel }}</span></div>
+              </div>
+            </sc-for>
+          </div>
+        </section>
+      </div>
+    </sc-if>
   </div>
 </main>
 </sc-if>
@@ -456,22 +632,23 @@ html{scroll-behavior:smooth}
 class Component extends DCLogic {
   static KEY = 'camelia-data-v1';
   static SEED = [
-    { id: 'p1', name: 'Anillo Camelia', cat: 'Anillos', material: 'Plata 925 con baño de oro', price: 48, stock: 6, visible: true, featured: true },
-    { id: 'p2', name: 'Aretes Perla Luna', cat: 'Aretes', material: 'Perla de agua dulce y oro laminado', price: 36, stock: 10, visible: true, featured: false },
-    { id: 'p3', name: 'Collar Rocío', cat: 'Collares', material: 'Cadena fina con dije de gota', price: 55, stock: 4, visible: true, featured: true },
-    { id: 'p4', name: 'Pulsera Seda', cat: 'Pulseras', material: 'Eslabones delicados en baño de oro', price: 42, stock: 0, visible: true, featured: false },
-    { id: 'p5', name: 'Solitario Alba', cat: 'Anillos', material: 'Circón talla brillante en plata', price: 62, stock: 3, visible: true, featured: false },
-    { id: 'p6', name: 'Aretes Gota Dorada', cat: 'Aretes', material: 'Argollas con gota martillada', price: 39, stock: 8, visible: true, featured: false },
-    { id: 'p7', name: 'Collar Inicial', cat: 'Collares', material: 'Letra personalizada en oro laminado', price: 45, stock: 12, visible: true, featured: false },
-    { id: 'p8', name: 'Pulsera Brisa', cat: 'Pulseras', material: 'Cordón de seda y dije de camelia', price: 29, stock: 9, visible: true, featured: false }
+    { id: 'p1', name: 'Anillo Camelia', cat: 'Anillos', material: 'Plata 925 con baño de oro', price: 48, cost: 20, stock: 6, visible: true, featured: true },
+    { id: 'p2', name: 'Aretes Perla Luna', cat: 'Aretes', material: 'Perla de agua dulce y oro laminado', price: 36, cost: 15, stock: 10, visible: true, featured: false },
+    { id: 'p3', name: 'Collar Rocío', cat: 'Collares', material: 'Cadena fina con dije de gota', price: 55, cost: 24, stock: 4, visible: true, featured: true },
+    { id: 'p4', name: 'Pulsera Seda', cat: 'Pulseras', material: 'Eslabones delicados en baño de oro', price: 42, cost: 18, stock: 0, visible: true, featured: false },
+    { id: 'p5', name: 'Solitario Alba', cat: 'Anillos', material: 'Circón talla brillante en plata', price: 62, cost: 27, stock: 3, visible: true, featured: false },
+    { id: 'p6', name: 'Aretes Gota Dorada', cat: 'Aretes', material: 'Argollas con gota martillada', price: 39, cost: 16, stock: 8, visible: true, featured: false },
+    { id: 'p7', name: 'Collar Inicial', cat: 'Collares', material: 'Letra personalizada en oro laminado', price: 45, cost: 19, stock: 12, visible: true, featured: false },
+    { id: 'p8', name: 'Pulsera Brisa', cat: 'Pulseras', material: 'Cordón de seda y dije de camelia', price: 29, cost: 11, stock: 9, visible: true, featured: false }
   ];
+  static adminUrl() { try { return /duena|dueña|admin/i.test(decodeURIComponent(location.hash + location.search)); } catch (e) { return false; } }
   constructor(p) {
     super(p);
     let saved = null;
     try { saved = JSON.parse(localStorage.getItem(Component.KEY)); } catch (e) {}
     this.state = {
-      view: (this.props.startView ?? 'cliente') === 'dueña' ? 'owner' : 'client',
-      products: saved?.products ?? Component.SEED,
+      view: Component.adminUrl() || (this.props.startView ?? 'cliente') === 'dueña' ? 'owner' : 'client',
+      products: (saved?.products ?? Component.SEED).map(p => p.cost == null ? { ...p, cost: Component.SEED.find(x => x.id === p.id)?.cost ?? 0 } : p),
       orders: saved?.orders ?? [],
       promo: saved?.promo ?? { active: false, title: 'Semana Camelia', pct: 15, scope: 'Todas' },
       cart: saved?.cart ?? [], cartOpen: false, cartSent: null,
@@ -479,8 +656,8 @@ class Component extends DCLogic {
       modal: null, sent: null, fName: '', fPhone: '', fNote: ''
     };
   }
-  componentDidMount() { this.reveal(); this.onResize = () => this.setState({ w: window.innerWidth }); window.addEventListener('resize', this.onResize); this.onResize(); }
-  componentDidUpdate(pp, ps) {
+  componentDidMount() { this.onHash = () => { const a = Component.adminUrl(); this.setState(a ? { view: 'owner' } : { view: 'client' }); }; window.addEventListener('hashchange', this.onHash); this.reveal(); this.onResize = () => this.setState({ w: window.innerWidth }); window.addEventListener('resize', this.onResize); this.onResize(); }
+  componentDidUpdate(pp, ps = {}) {
     if (ps.products !== this.state.products || ps.orders !== this.state.orders || ps.promo !== this.state.promo || ps.cart !== this.state.cart) {
       try { localStorage.setItem(Component.KEY, JSON.stringify({ products: this.state.products, orders: this.state.orders, promo: this.state.promo, cart: this.state.cart })); } catch (e) {}
     }
@@ -512,6 +689,60 @@ class Component extends DCLogic {
   }
   setQty(id, q) { this.setState(ss => ({ cart: q <= 0 ? ss.cart.filter(c => c.id !== id) : ss.cart.map(c => c.id === id ? { ...c, qty: q } : c) })); }
   upd(id, patch) { this.setState(s => ({ products: s.products.map(p => p.id === id ? { ...p, ...patch } : p) })); }
+  _calcFinance() {
+    const s = this.state, cur = this.props.currency ?? '$';
+    const money = n => cur + (Number(n) || 0).toLocaleString('es');
+    const sold = s.orders.filter(o => o.status === 'Confirmado' || o.status === 'Entregado');
+    const soldQty = {}; let revenue = 0, cogs = 0;
+    sold.forEach(o => { revenue += o.price || 0; (o.lines || []).forEach(l => { soldQty[l.id] = (soldQty[l.id] || 0) + l.qty; cogs += l.qty * (l.cost || 0); }); });
+    let invCost = 0, invRetail = 0, units = 0;
+    const finItems = s.products.map(p => {
+      const cost = p.cost || 0, margin = p.price - cost, pct = p.price > 0 ? Math.round(margin / p.price * 100) : 0;
+      invCost += p.stock * cost; invRetail += p.stock * p.price; units += p.stock;
+      return { id: p.id, name: p.name, cat: p.cat, stock: p.stock, cost, price: p.price,
+        stockLabel: p.stock <= 0 ? 'Agotado' : p.stock + (p.stock === 1 ? ' unidad' : ' unidades'),
+        stockColor: p.stock <= 0 ? '#7A1C22' : p.stock <= 3 ? '#8A6A3F' : '#3B2A22', lowStock: p.stock > 0 && p.stock <= 3,
+        soldLabel: (soldQty[p.id] || 0) + ' vendidas',
+        marginLabel: money(margin) + ' · ' + pct + '%', marginColor: margin < 0 ? '#7A1C22' : '#3B2A22',
+        invCostLabel: money(p.stock * cost), invRetailLabel: money(p.stock * p.price),
+        setCost: e => this.upd(p.id, { cost: Math.max(0, Number(e.target.value)) }),
+        setPrice: e => this.upd(p.id, { price: Math.max(0, Number(e.target.value)) }),
+        inc: () => this.upd(p.id, { stock: p.stock + 1 }), dec: () => this.upd(p.id, { stock: Math.max(0, p.stock - 1) }) };
+    });
+    const profit = revenue - cogs;
+    const pc = (v, m) => (m > 0 ? Math.max(0, Math.min(100, v / m * 100)) : 0).toFixed(1) + '%';
+    const fmax = Math.max(revenue, cogs, Math.abs(profit), 1);
+    const flowBars = [
+      { label: 'Ingresos', value: money(revenue), w: pc(revenue, fmax), color: '#7A1C22' },
+      { label: 'Costo de lo vendido', value: money(cogs), w: pc(cogs, fmax), color: '#D9B77E' },
+      { label: 'Ganancia neta', value: money(profit), w: pc(Math.abs(profit), fmax), color: profit < 0 ? '#8A6A3F' : '#B8925A' }
+    ];
+    const potential = invRetail - invCost;
+    const cats = ['Anillos', 'Aretes', 'Collares', 'Pulseras'].map(c => {
+      const ps = s.products.filter(p => p.cat === c);
+      return { cat: c, cost: ps.reduce((a, p) => a + p.stock * (p.cost || 0), 0), retail: ps.reduce((a, p) => a + p.stock * p.price, 0), units: ps.reduce((a, p) => a + p.stock, 0) };
+    });
+    const cmax = Math.max(...cats.map(c => c.retail), 1);
+    const catBars = cats.map(c => ({ cat: c.cat, units: c.units + ' u.', retailLabel: money(c.retail), costLabel: money(c.cost),
+      wRetail: pc(c.retail, cmax), wCost: pc(c.cost, cmax) }));
+    const smax = Math.max(...s.products.map(p => p.stock), 1);
+    const stockBars = [...s.products].sort((a, b) => a.stock - b.stock).map(p => ({ name: p.name, label: p.stock <= 0 ? 'Agotado' : p.stock + ' u.',
+      w: pc(Math.max(p.stock, 0), smax), color: p.stock <= 0 ? '#7A1C22' : p.stock <= 3 ? '#D9B77E' : '#B8925A', fg: p.stock <= 0 ? '#7A1C22' : '#3B2A22' }));
+    const marginBars = s.products.map(p => { const m = p.price > 0 ? Math.round((p.price - (p.cost || 0)) / p.price * 100) : 0;
+      return { name: p.name, m, label: m + '%', w: pc(Math.max(m, 0), 100), color: m < 30 ? '#8A6A3F' : m < 50 ? '#D9B77E' : '#7A1C22' }; }).sort((a, b) => b.m - a.m);
+    return { finItems, flowBars, hasSales: revenue > 0, noSales: revenue <= 0, catBars, stockBars, marginBars,
+      invCostW: pc(invCost, invRetail), invProfitW: pc(potential, invRetail), invCostShort: money(invCost), invProfitShort: money(potential), invRetailShort: money(invRetail), finStats: [
+      { value: units, label: 'Unidades en inventario' },
+      { value: money(invCost), label: 'Invertido en inventario (costo)' },
+      { value: money(invRetail), label: 'Valor de venta del inventario' },
+      { value: money(invRetail - invCost), label: 'Ganancia potencial del inventario' }
+    ], flowStats: [
+      { value: money(revenue), label: 'Ingresos (ventas confirmadas)', color: '#3B2A22' },
+      { value: '− ' + money(cogs), label: 'Costo de lo vendido', color: '#8A6A3F' },
+      { value: money(profit), label: 'Ganancia neta', color: profit < 0 ? '#7A1C22' : '#3B2A22' },
+      { value: (revenue > 0 ? Math.round(profit / revenue * 100) : 0) + '%', label: 'Margen sobre ventas', color: '#3B2A22' }
+    ] };
+  }
   renderVals() {
     const s = this.state, cur = this.props.currency ?? '$';
     const money = n => cur + (Number(n) || 0).toLocaleString('es');
@@ -558,6 +789,7 @@ class Component extends DCLogic {
       setMaterial: e => this.upd(p.id, { material: e.target.value }),
       setCat: e => this.upd(p.id, { cat: e.target.value }),
       setPrice: e => this.upd(p.id, { price: Math.max(0, Number(e.target.value)) }),
+      setCost: e => this.upd(p.id, { cost: Math.max(0, Number(e.target.value)) }),
       inc: () => this.upd(p.id, { stock: p.stock + 1 }),
       dec: () => this.upd(p.id, { stock: Math.max(0, p.stock - 1) }),
       toggleFeatured: () => this.upd(p.id, { featured: !p.featured }),
@@ -565,7 +797,8 @@ class Component extends DCLogic {
       remove: () => { if (confirm('¿Eliminar "' + p.name + '"?')) this.setState(ss => ({ products: ss.products.filter(x => x.id !== p.id) })); }
     }));
     const onPieces = s.ownerTab === 'pieces';
-    const tp = onPieces ? on : off, to = onPieces ? off : on;
+    const onOrders = s.ownerTab === 'orders', onFinance = s.ownerTab === 'finance';
+    const tp = onPieces ? on : off, to = onOrders ? on : off, tf = onFinance ? on : off;
     const pending = s.orders.filter(o => o.status === 'Nuevo').length;
     const salesTotal = s.orders.filter(o => o.status === 'Confirmado' || o.status === 'Entregado').reduce((a, o) => a + (o.price || 0), 0);
     const mobile = (s.w || 1200) < 860;
@@ -580,12 +813,14 @@ class Component extends DCLogic {
     const cartTotal = cartLines.reduce((a, l) => a + l.unit * l.qty, 0);
     const cantCart = !s.fName.trim() || cartLines.length === 0;
     return {
-      isClient, isOwner: !isClient, showNav: isClient && !mobile,
+      adminMode: Component.adminUrl() || (this.props.startView ?? 'cliente') === 'dueña', isClient, isJoin: s.view === 'join', isOwner: s.view === 'owner', showNav: isClient && (s.w || 1200) >= 1100,
+      showJoin: () => { this.setState({ view: 'join', cartOpen: false }); window.scrollTo(0, 0); },
+      joinWaUrl: 'https://wa.me/593967335317?text=' + encodeURIComponent('Hola Camelia ✨, quiero información para trabajar con ustedes.'),
       logoH: mobile ? 52 : 64, tabPad: mobile ? '8px 14px' : '9px 18px',
       tabClientLabel: mobile ? 'Tienda' : 'Vista cliente', tabOwnerLabel: mobile ? 'Dueña' : 'Panel de la dueña',
-      showClient: () => this.setState({ view: 'client' }), showOwner: () => this.setState({ view: 'owner' }),
-      tabClientBg: isClient ? '#7A1C22' : 'transparent', tabClientFg: isClient ? '#F7F1EA' : '#5A4336',
-      tabOwnerBg: isClient ? 'transparent' : '#7A1C22', tabOwnerFg: isClient ? '#5A4336' : '#F7F1EA',
+      showClient: () => { this.setState({ view: 'client' }); window.scrollTo(0, 0); }, showOwner: () => this.setState({ view: 'owner' }),
+      tabClientBg: s.view !== 'owner' ? '#7A1C22' : 'transparent', tabClientFg: s.view !== 'owner' ? '#F7F1EA' : '#5A4336',
+      tabOwnerBg: s.view === 'owner' ? '#7A1C22' : 'transparent', tabOwnerFg: s.view === 'owner' ? '#F7F1EA' : '#5A4336',
       showMarquee: this.props.showMarquee ?? true, marqueeItems,
       cats, shopItems, shopEmpty: shopItems.length === 0,
       orderGeneral: () => this.setState({ modal: { id: null }, sent: null }),
@@ -604,6 +839,7 @@ class Component extends DCLogic {
         if (cantCart) return;
         const summary = cartLines.map(l => l.name + (l.qty > 1 ? ' ×' + l.qty : '')).join(', ');
         const o = { id: 'o' + Date.now(), client: s.fName.trim(), phone: s.fPhone.trim(), note: s.fNote.trim(), product: summary, price: cartTotal,
+          lines: cartLines.map(l => ({ id: l.id, qty: l.qty, unit: l.unit, cost: (s.products.find(x => x.id === l.id) || {}).cost || 0 })),
           date: new Date().toLocaleDateString('es', { day: 'numeric', month: 'short' }), status: 'Nuevo' };
         const msg = ['Hola Camelia ✨, soy ' + o.client + '. Quiero hacer este pedido:', ...cartLines.map(l => '• ' + l.name + ' ×' + l.qty + ' — ' + l.lineLabel),
           'Total: ' + money(cartTotal), o.note ? 'Nota: ' + o.note : '', o.phone ? 'Mi número: ' + o.phone : ''].filter(Boolean).join('\n');
@@ -616,6 +852,7 @@ class Component extends DCLogic {
         const m = s.modal;
         const o = { id: 'o' + Date.now(), client: s.fName.trim(), phone: s.fPhone.trim(), note: s.fNote.trim(),
           product: m.id ? m.name : 'Consulta general', price: m.id ? m.price : 0,
+          lines: m.id ? [{ id: m.id, qty: 1, unit: m.price, cost: (s.products.find(x => x.id === m.id) || {}).cost || 0 }] : [],
           date: new Date().toLocaleDateString('es', { day: 'numeric', month: 'short' }), status: 'Nuevo' };
         const msg = ['Hola Camelia ✨, soy ' + o.client + '.',
           m.id ? 'Me interesa: ' + o.product + ' (' + money(o.price) + ').' : 'Quisiera hacer una consulta.',
@@ -629,11 +866,12 @@ class Component extends DCLogic {
         { value: s.products.filter(p => p.stock <= 0).length, label: 'Piezas agotadas' },
         { value: money(salesTotal), label: 'Ventas confirmadas' }
       ],
-      onPieces, onOrders: !onPieces,
+      onPieces, onOrders, onFinance, tabFinance: () => this.setState({ ownerTab: 'finance' }), tFinBg: tf.bg, tFinFg: tf.fg, tFinBorder: tf.border,
+      ...this._calcFinance(),
       tabPieces: () => this.setState({ ownerTab: 'pieces' }), tabOrders: () => this.setState({ ownerTab: 'orders' }),
       tPiecesBg: tp.bg, tPiecesFg: tp.fg, tPiecesBorder: tp.border, tOrdersBg: to.bg, tOrdersFg: to.fg, tOrdersBorder: to.border,
       productCount: s.products.length, orderCount: s.orders.length,
-      addProduct: () => this.setState(ss => ({ products: [{ id: 'p' + Date.now(), name: 'Nueva pieza', cat: 'Anillos', material: 'Describe el material', price: 0, stock: 1, visible: false, featured: false }, ...ss.products] })),
+      addProduct: () => this.setState(ss => ({ products: [{ id: 'p' + Date.now(), name: 'Nueva pieza', cat: 'Anillos', material: 'Describe el material', price: 0, cost: 0, stock: 1, visible: false, featured: false }, ...ss.products] })),
       adminItems, orderItems, noOrders: orderItems.length === 0,
       promoActive: pr.active, promoText, promoTitle: pr.title, promoPct: pr.pct, promoScopes,
       promoTrack: pr.active ? '#B8925A' : '#E4D6C8', promoKnob: pr.active ? 'translateX(18px)' : 'none',
