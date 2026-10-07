@@ -410,8 +410,23 @@ html{scroll-behavior:smooth}
     <sc-if value="{{ authed }}" hint-placeholder-val="{{ false }}">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font:500 13px 'DM Sans',sans-serif;color:#5A4336">
         <span style="display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:{{ syncDot }}"></span>{{ syncLabel }}</span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <sc-if value="{{ showInstall }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ installApp }}" style="cursor:pointer;display:flex;align-items:center;gap:8px;border:0;background:#7A1C22;color:#F7F1EA;border-radius:999px;padding:6px 18px 6px 6px;font:600 13px 'DM Sans',sans-serif" style-hover="background:#5E151A"><img src="assets/icons/icon-192.png" alt="" style="width:26px;height:26px;border-radius:50%">Instalar app en el celular</button>
+        </sc-if>
         <button onClick="{{ logout }}" style="cursor:pointer;border:1px solid #E4D6C8;background:transparent;border-radius:999px;padding:8px 16px;font:500 13px 'DM Sans',sans-serif;color:#5A4336" style-hover="background:#F4E4DE">Cerrar sesión</button>
+        </div>
       </div>
+      <sc-if value="{{ installHelp }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;gap:16px;align-items:flex-start;background:#FFFCF8;border:1px solid #E4D6C8;border-radius:16px;padding:18px 20px">
+          <img src="assets/icons/icon-192.png" alt="" style="width:56px;height:56px;border-radius:14px;flex:none;border:1px solid #E4D6C8">
+          <div style="display:flex;flex-direction:column;gap:8px;font:400 14px/1.6 'DM Sans',sans-serif;color:#3B2A22">
+            <strong style="font:600 20px 'Cormorant Garamond',serif">Agregar Camelia a tu pantalla de inicio</strong>
+            <span><strong>iPhone (Safari):</strong> toca el botón Compartir y elige “Agregar a inicio”.</span>
+            <span><strong>Android (Chrome):</strong> toca el menú ⋮ y elige “Instalar app” o “Agregar a la pantalla principal”.</span>
+          </div>
+        </div>
+      </sc-if>
     </sc-if>
     <section style="position:relative;overflow:hidden;border-radius:22px;padding:clamp(24px,5vw,40px);background:radial-gradient(ellipse 70% 60% at 100% 0%,rgba(228,201,160,.22),transparent 70%),#5E151A;color:#F7F1EA;display:flex;flex-direction:column;gap:28px">
       <div style="display:flex;flex-direction:column;gap:12px">
@@ -690,6 +705,26 @@ class Component extends DCLogic {
     } catch (e) { console.warn('Supabase no disponible, uso datos locales', e); this.setState({ dbError: true, loginErr: 'No se pudo conectar con la base de datos. Revisa tu internet y recarga la página.' }); }
   }
   syncImgs() { requestAnimationFrame(() => document.querySelectorAll('img[data-src]').forEach(i => { const u = i.dataset.src; if (u && !u.includes('{{') && i.getAttribute('src') !== u) i.src = u; })); }
+  setupApp() {
+    if (!Component.adminUrl()) return;
+    const add = (tag, attrs) => { const el = document.createElement(tag); Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v)); document.head.appendChild(el); };
+    add('link', { rel: 'manifest', href: 'manifest-duena.json' });
+    add('link', { rel: 'apple-touch-icon', href: 'assets/icons/apple-touch-icon.png' });
+    add('meta', { name: 'apple-mobile-web-app-capable', content: 'yes' });
+    add('meta', { name: 'mobile-web-app-capable', content: 'yes' });
+    add('meta', { name: 'apple-mobile-web-app-title', content: 'Camelia' });
+    add('meta', { name: 'theme-color', content: '#7A1C22' });
+    document.title = 'Camelia · Panel';
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+    const standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+    this.setState({ installed: !!standalone });
+    window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); this.deferredInstall = e; this.setState({ canPrompt: true }); });
+    window.addEventListener('appinstalled', () => this.setState({ installed: true, installHelp: false }));
+  }
+  async installApp() {
+    if (this.deferredInstall) { this.deferredInstall.prompt(); const r = await this.deferredInstall.userChoice; this.deferredInstall = null; this.setState({ canPrompt: false, installed: r.outcome === 'accepted' }); }
+    else this.setState(s => ({ installHelp: !s.installHelp }));
+  }
   startPoll() { clearInterval(this.poll); this.poll = setInterval(() => this.loadOrders(), 30000); }
   async loadAll(admin) {
     const pr = await this.db.from('promo').select('*').eq('id', 1).maybeSingle();
@@ -784,7 +819,7 @@ class Component extends DCLogic {
       modal: null, sent: null, fName: '', fPhone: '', fNote: ''
     };
   }
-  componentDidMount() { this.onHash = () => { const a = Component.adminUrl(); this.setState(a ? { view: 'owner' } : { view: 'client' }); }; window.addEventListener('hashchange', this.onHash); this.reveal(); this.onResize = () => this.setState({ w: window.innerWidth }); window.addEventListener('resize', this.onResize); this.onResize(); this.initDb(); }
+  componentDidMount() { this.onHash = () => { const a = Component.adminUrl(); this.setState(a ? { view: 'owner' } : { view: 'client' }); }; window.addEventListener('hashchange', this.onHash); this.reveal(); this.onResize = () => this.setState({ w: window.innerWidth }); window.addEventListener('resize', this.onResize); this.onResize(); this.initDb(); this.setupApp(); }
   componentDidUpdate(pp, ps = {}) {
     if (ps.products !== this.state.products || ps.orders !== this.state.orders || ps.promo !== this.state.promo || ps.cart !== this.state.cart) {
       try { localStorage.setItem(Component.KEY, JSON.stringify({ products: this.state.products, orders: this.state.orders, promo: this.state.promo, cart: this.state.cart })); } catch (e) {}
@@ -952,7 +987,7 @@ class Component extends DCLogic {
       loginEmail: s.loginEmail || '', loginPass: s.loginPass || '', loginErr: s.loginErr || '', hasLoginErr: !!s.loginErr,
       loginBtn: s.loginBusy ? 'Entrando…' : 'Entrar',
       setLoginEmail: e => this.setState({ loginEmail: e.target.value }), setLoginPass: e => this.setState({ loginPass: e.target.value }),
-      doLogin: e => this.doLogin(e), logout: () => this.logout(),
+      doLogin: e => this.doLogin(e), showInstall: !s.installed, installHelp: !!s.installHelp && !s.installed, installApp: () => this.installApp(), logout: () => this.logout(),
       syncLabel: s.sync === 'saving' ? 'Guardando cambios…' : s.sync === 'error' ? 'No se pudo guardar. Revisa tu conexión.' : 'Conectado · cambios guardados en línea',
       syncDot: s.sync === 'saving' ? '#D9B77E' : s.sync === 'error' ? '#7A1C22' : '#6E8B5A', showNav: isClient && (s.w || 1200) >= 1100,
       showJoin: () => { this.setState({ view: 'join', cartOpen: false }); window.scrollTo(0, 0); },
